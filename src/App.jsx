@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
+import StudentDashboard from './pages/StudentDashboard.jsx'
 import arrowRight from './assets/arrow-right.svg'
 import dashboardIllustration from './assets/clearance-dashboard-illustration.svg'
-import eyeIcon from './assets/eye.png'
 import featureMobile from './assets/feature-mobile-friendly.svg'
 import featureOffice from './assets/feature-office-approval.svg'
 import featureProgress from './assets/feature-progress-tracking.svg'
@@ -11,7 +11,6 @@ import featureSecure from './assets/feature-secure-records.svg'
 import officeAccounting from './assets/office-accounting.svg'
 import officeLibrary from './assets/office-library.svg'
 import officeStudentAffairs from './assets/office-student-affairs.svg'
-import googleIcon from './assets/google.png'
 import roleAdmin from './assets/role-administrator.svg'
 import roleOfficer from './assets/role-clearance-officer.svg'
 import roleStudent from './assets/role-student.svg'
@@ -114,134 +113,36 @@ const clearanceStatuses = [
 ]
 
 function LoginPage() {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
-  const [loginMessage, setLoginMessage] = useState('')
-
   return (
-    <main className="login-page">
-      <section className="login-intro" aria-labelledby="login-intro-title">
-        <a className="login-brand" href="/" aria-label="ClearanceDNSC home">
-          <span className="login-brand-mark" aria-hidden="true" />
-          <span>ClearanceDNSC</span>
-        </a>
-        <div className="login-intro-copy">
-          <p className="login-kicker">Student Clearance Management System</p>
-          <h1 id="login-intro-title">
-            Your clearance,<br />
-            <span>made simpler.</span>
-          </h1>
-          <p className="login-intro-description">
-            Manage your student clearance, follow office approvals, and monitor
-            your progress through one convenient online system.
-          </p>
-          <ul className="login-benefits">
-            <li>
-              <span className="login-benefit-icon" aria-hidden="true">
-                <img src={statusApproved} alt="" />
-              </span>
-              Track your clearance progress
-            </li>
-            <li>
-              <span className="login-benefit-icon" aria-hidden="true">
-                <img src={officeAccounting} alt="" />
-              </span>
-              Check office approval statuses
-            </li>
-            <li>
-              <span className="login-benefit-icon" aria-hidden="true">
-                <img src={shieldCheck} alt="" />
-              </span>
-              Access your clearance securely
-            </li>
-          </ul>
-        </div>
-        <footer className="login-intro-footer">
-          <strong>Davao del Norte State College</strong>
-          <span>A Web-Based Student Clearance Management System</span>
-          <span>© {new Date().getFullYear()} ClearanceDNSC · Student Project</span>
-        </footer>
-      </section>
-
-      <section className="login-form-panel" aria-labelledby="login-title">
-        <div className="login-form-content">
-          <p className="eyebrow">Welcome back</p>
-          <h2 id="login-title">Sign in to your account</h2>
-          <p className="login-form-description">
-            Enter your account details to access your student clearance.
-          </p>
-          <form
-            className="login-form"
-            onSubmit={(event) => {
-              event.preventDefault()
-              setLoginMessage('Sign-in is not connected yet.')
-            }}
-          >
-            <label htmlFor="student-identifier">Student ID or Email</label>
-            <input
-              id="student-identifier"
-              name="identifier"
-              type="text"
-              autoComplete="username"
-              placeholder="Enter your student ID or email"
-              required
-            />
-            <div className="login-password-label">
-              <label htmlFor="login-password">Password</label>
-              <button
-                className="login-text-button"
-                type="button"
-                onClick={() => setLoginMessage('Password recovery is not connected yet.')}
-              >
-                Forgot password?
-              </button>
-            </div>
-            <div className="login-password-field">
-              <input
-                id="login-password"
-                name="password"
-                type={isPasswordVisible ? 'text' : 'password'}
-                autoComplete="current-password"
-                placeholder="Enter your password"
-                required
-              />
-              <button
-                className="password-visibility-toggle"
-                type="button"
-                aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
-                aria-pressed={isPasswordVisible}
-                onClick={() => setIsPasswordVisible((visible) => !visible)}
-              >
-                <img src={eyeIcon} alt="" />
-                {!isPasswordVisible && <span className="password-eye-slash" aria-hidden="true" />}
-              </button>
-            </div>
-            <button className="login-submit-button" type="submit">
-              <span className="login-submit-icon" aria-hidden="true">
-                <img src={arrowRight} alt="" />
-              </span>
-              Sign In
-            </button>
-            <button
-              className="login-google-button"
-              type="button"
-              onClick={() => setLoginMessage('Google sign-in is not connected yet.')}
-            >
-              <img className="google-icon" src={googleIcon} alt="" />
-              Continue with Google
-            </button>
-            {loginMessage && <p className="login-message" role="status">{loginMessage}</p>}
-          </form>
-          <p className="login-privacy-note">
-            <img src={shieldCheck} alt="" aria-hidden="true" />
-            Your account information should remain private.
-          </p>
-          <a className="login-home-link" href="/">
-            <img src={arrowRight} alt="" aria-hidden="true" />
-            Back to homepage
+    <div className="login-page">
+      <header className="site-header">
+        <div className="container header-content">
+          <a className="brand" href="/" aria-label="ClearanceDNSC home">
+            <span className="brand-mark" aria-hidden="true">C</span>
+            <span>ClearanceDNSC</span>
           </a>
+          <a className="button button-small" href="/">Back to Home</a>
         </div>
-      </section>
-    </main>
+      </header>
+      <main className="login-main">
+        <section className="login-card" aria-labelledby="login-title">
+          <span className="login-icon" aria-hidden="true">C</span>
+          <p className="eyebrow">ClearanceDNSC Account</p>
+          <h1 id="login-title">Sign-in is coming soon.</h1>
+          <p>
+            The website design is ready, but account authentication still needs
+            to be connected. Students, clearance officers, and administrators
+            will be able to sign in here once the application is set up.
+          </p>
+          <a className="button" href="/">
+            Return to the Homepage <span aria-hidden="true">→</span>
+          </a>
+          <a className="button button-light" href="/dashboard">
+            Open the Student Dashboard
+          </a>
+        </section>
+      </main>
+    </div>
   )
 }
 
@@ -290,6 +191,13 @@ function OfficeRow({ image, name, status, statusClass, statusImage }) {
 
 function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [showSignedOutMessage, setShowSignedOutMessage] = useState(
+    () => sessionStorage.getItem('signed-out') === 'true',
+  )
+
+  useEffect(() => {
+    if (showSignedOutMessage) sessionStorage.removeItem('signed-out')
+  }, [showSignedOutMessage])
 
   return (
     <>
@@ -333,6 +241,16 @@ function HomePage() {
       </header>
 
       <main>
+        {showSignedOutMessage && (
+          <div className="container">
+            <div className="signed-out-message" role="status">
+              <span>You’ve been signed out.</span>
+              <button type="button" onClick={() => setShowSignedOutMessage(false)} aria-label="Dismiss sign-out message">
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
         <section className="hero" id="home">
           <div className="container hero-layout">
             <div className="hero-copy">
@@ -484,14 +402,19 @@ function SectionHeading({ eyebrow, title, description, titleId }) {
 }
 
 function App() {
-  const isLoginPage = window.location.pathname.replace(/\/+$/, '') === '/login'
+  const currentPath = window.location.pathname.replace(/\/+$/, '') || '/'
+  const isLoginPage = currentPath === '/login'
+  const isDashboardPage = currentPath === '/dashboard'
 
   useEffect(() => {
     document.title = isLoginPage
       ? 'Account Access | ClearanceDNSC'
+      : isDashboardPage
+        ? 'Student Dashboard | ClearanceDNSC'
       : 'ClearanceDNSC | Student Clearance, Simplified'
-  }, [isLoginPage])
+  }, [isDashboardPage, isLoginPage])
 
+  if (isDashboardPage) return <StudentDashboard />
   return isLoginPage ? <LoginPage /> : <HomePage />
 }
 
