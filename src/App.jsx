@@ -22,6 +22,7 @@ import statusProgress from './assets/status-in-progress.svg'
 import statusPending from './assets/status-pending.svg'
 import statusRejected from './assets/status-rejected.svg'
 
+
 const processSteps = [
   {
     title: 'Log In',

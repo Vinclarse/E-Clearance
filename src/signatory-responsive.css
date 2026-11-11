@@ -1,0 +1,135 @@
+.signatory-shell,
+.signatory-shell * {
+  box-sizing: border-box;
+}
+
+.signatory-main,
+.signatory-main > * {
+  min-width: 0;
+}
+
+.signatory-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.signatory-table {
+  min-width: 680px;
+}
+
+.signatory-approval-page > *,
+.signatory-dashboard > * {
+  min-width: 0;
+}
+
+.signatory-modal {
+  max-width: calc(100vw - 2rem);
+}
+
+@media (max-width: 1100px) {
+  .signatory-header {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    border-radius: 24px !important;
+  }
+
+  .signatory-nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .signatory-dashboard,
+  .signatory-approval-page {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .signatory-cohort-analytics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .signatory-kanban-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .signatory-deficiencies-header {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .signatory-metrics-grid {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .signatory-shell {
+    padding: 0.75rem !important;
+  }
+
+  .signatory-header {
+    padding: 0.65rem !important;
+    align-items: flex-start !important;
+  }
+
+  .signatory-brand {
+    gap: 0.45rem !important;
+  }
+
+  .signatory-brand > div:last-child {
+    max-width: 155px;
+  }
+
+  .signatory-header-actions {
+    gap: 0.45rem !important;
+  }
+
+  .signatory-profile-copy {
+    display: none;
+  }
+
+  .signatory-nav {
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .signatory-nav button {
+    flex: 0 0 auto;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.72rem !important;
+  }
+
+  .signatory-stats-grid,
+  .signatory-cohort-analytics,
+  .signatory-kanban-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .signatory-cohort-filters {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .signatory-metrics-grid > * {
+    flex: 1 1 130px;
+  }
+
+  .signatory-deficiencies-header {
+    align-items: stretch !important;
+    padding: 1rem !important;
+  }
+
+  .signatory-approval-panel,
+  .signatory-main table + div,
+  .signatory-cohort-page > div:last-child,
+  .signatory-dashboard table {
+    font-size: 0.76rem;
+  }
+
+  .signatory-modal {
+    width: calc(100vw - 2rem) !important;
+    padding: 1rem !important;
+  }
+}
