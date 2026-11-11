@@ -1,23 +1,11 @@
 import React, { useState } from 'react';
 
 export default function SIG3() {
-  const [awaitingList, setAwaitingList] = useState([
-    { id: '2024-00132', name: 'Carla Mendoza', course: 'BSIS 2-B', reason: 'Laboratory fee', amount: 'PHP 300.00', date: 'Nov 03, 2026' },
-    { id: '2024-00189', name: 'Paolo Garcia', course: 'BSIS 2-B', reason: 'Overdue book: Operating System Concepts', amount: 'No amount', date: 'Nov 04, 2026' },
-    { id: '2024-00204', name: 'Hannah Lim', course: 'BSIT 3-D', reason: 'Unreturned book: Database System Concepts 7th Edition', amount: 'PHP 150.00', date: 'Nov 03, 2026' },
-  ]);
+  const [awaitingList, setAwaitingList] = useState([]);
 
-  const [readyList, setReadyList] = useState([
-    { id: '2024-00117', name: 'Luis Dela Cruz', course: 'BSIT 3-A', reason: 'Unreturned book: Database System Concepts 7th Edition', amount: 'PHP 150.00', time: 'Nov 08 - 11:42 AM' },
-    { id: '2024-00171', name: 'Nina Flores', course: 'BSIT 3-A', reason: 'Laboratory fee', amount: 'PHP 300.00', time: 'Nov 08 - 2:15 PM' },
-    { id: '2024-00219', name: 'Gabriel Torres', course: 'BSIT 3-B', reason: 'Lost laboratory equipment', amount: 'PHP 500.00', time: 'Nov 07 - 11:25 AM' },
-  ]);
+  const [readyList, setReadyList] = useState([]);
 
-  const [resolvedList, setResolvedList] = useState([
-    { id: '2024-00163', name: 'Rico Santos', course: 'BSIT 3-B', decision: 'Proof approved · requirement marked as cleared', amount: 'PHP 200.00', status: 'Cleared', date: 'Nov 08 - 3:30 PM' },
-    { id: '2024-00224', name: 'Elena Cruz', course: 'BSIS 2-A', decision: 'Proof rejected: Receipt is blurry. Please upload a clearer copy.', amount: 'PHP 150.00', status: 'Rejected', date: 'Nov 08 - 11:10 AM' },
-    { id: '2024-00231', name: 'Marco Dizon', course: 'BSIT 3-C', decision: 'Proof approved · requirement marked as cleared', amount: 'PHP 300.00', status: 'Cleared', date: 'Nov 08 - 4:48 PM' },
-  ]);
+  const [resolvedList, setResolvedList] = useState([]);
 
   const handleApproveProof = (item) => {
     setReadyList(prev => prev.filter(r => r.id !== item.id));
@@ -43,9 +31,9 @@ export default function SIG3() {
         </div>
 
         <div className="signatory-metrics-grid" style={{ display: 'flex', gap: '1rem' }}>
-          <HeaderPill count={awaitingList.length + 14} label="Active Deficiencies" accent="#AA5757" />
-          <HeaderPill count={readyList.length} label="Pending Settlement Proofs" accent="#3E7E9C" />
-          <HeaderPill count={resolvedList.length + 11} label="Resolved This Week" accent="#458469" />
+          <HeaderPill count={0} label="Active Deficiencies" accent="#AA5757" />
+          <HeaderPill count={0} label="Pending Settlement Proofs" accent="#3E7E9C" />
+          <HeaderPill count={0} label="Resolved This Week" accent="#458469" />
         </div>
       </div>
 

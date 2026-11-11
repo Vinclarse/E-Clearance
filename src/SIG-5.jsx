@@ -3,19 +3,17 @@ import React, { useState } from 'react';
 export default function SIG5() {
   const [filter, setFilter] = useState('All');
 
-  const [roster, setRoster] = useState([
-    { id: '2024-00101', name: 'Ana Reyes', course: 'BSIT 3-A', steps: [true, true, true, false, false, false], clearedCount: '3 of 6', status: 'Pending', validated: false },
-    { id: '2024-00117', name: 'Luis Dela Cruz', course: 'BSIT 3-A', steps: [false, false, false, false, false, false], clearedCount: '0 of 6', status: 'Under Review', validated: false },
-    { id: '2024-00163', name: 'Rico Santos', course: 'BSIT 3-B', steps: [true, true, true, true, true, true], clearedCount: '6 of 6', status: 'Completed', validated: true },
-    { id: '2024-00132', name: 'Carla Mendoza', course: 'BSIS 2-B', steps: [true, false, false, false, false, false], clearedCount: '1 of 6', status: 'Deficiency', validated: false },
-    { id: '2024-00231', name: 'Marco Dizon', course: 'BSIT 3-C', steps: [true, true, true, true, true, true], clearedCount: '6 of 6', status: 'Completed', validated: true },
-    { id: '2024-00158', name: 'Joy Ramirez', course: 'BSIS 2-A', steps: [true, true, true, true, false, false], clearedCount: '4 of 6', status: 'Pending', validated: false },
-  ]);
+  const [roster, setRoster] = useState([]);
 
   const toggleValidate = (id) => {
     setRoster(prev => prev.map(s => s.id === id ? { ...s, validated: !s.validated } : s));
   };
 
+  const completedStudents = roster.filter((student) => student.status === 'Completed').length;
+  const completionRate = roster.length === 0
+    ? 0
+    : Math.round((completedStudents / roster.length) * 100);
+  const completionCircumference = 2 * Math.PI * 24;
   const filteredRoster = roster.filter(s => filter === 'All' || s.status === filter);
 
   return (
@@ -27,48 +25,69 @@ export default function SIG5() {
         {/* Department Stats */}
         <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '1.2rem' }}>
           <div style={{ fontSize: '0.68rem', color: '#74806E', fontWeight: 'bold' }}>TOTAL DEPARTMENT STUDENTS</div>
-          <div style={{ fontSize: '2.2rem', fontWeight: '800', color: '#29352A' }}>120</div>
-          <div style={{ fontSize: '0.72rem', color: '#91A778' }}>BSIT: 120 Students Enrolled</div>
+          <div style={{ fontSize: '2.2rem', fontWeight: '800', color: '#29352A' }}>0</div>
+          <div style={{ fontSize: '0.72rem', color: '#91A778' }}>BSIT: 0 Students Enrolled</div>
         </div>
 
         {/* Completion Gauge */}
         <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '1.2rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div style={{
-            width: 60,
-            height: 60,
-            borderRadius: '50%',
-            border: '7px solid #51664C',
-            borderTopColor: '#E2E7DC',
-            display: 'grid',
-            placeItems: 'center',
-            fontWeight: '800',
-            fontSize: '0.95rem'
-          }}>
-            64%
-          </div>
+          <svg
+            width="60"
+            height="60"
+            viewBox="0 0 60 60"
+            role="img"
+            aria-label={`${completionRate}% cohort completion`}
+          >
+            <circle cx="30" cy="30" r="24" fill="none" stroke="#E2E7DC" strokeWidth="7" />
+            <circle
+              cx="30"
+              cy="30"
+              r="24"
+              fill="none"
+              stroke="#51664C"
+              strokeWidth="7"
+              strokeDasharray={completionCircumference}
+              strokeDashoffset={completionCircumference * (1 - completionRate / 100)}
+              strokeLinecap="round"
+              transform="rotate(-90 30 30)"
+            />
+            <text
+              x="30"
+              y="30"
+              textAnchor="middle"
+              dominantBaseline="central"
+              fill="#29352A"
+              fontSize="12"
+              fontWeight="800"
+            >
+              {completionRate}%
+            </text>
+          </svg>
           <div>
             <div style={{ fontWeight: '700', fontSize: '0.85rem' }}>Cohort Completion Rate</div>
-            <div style={{ fontSize: '0.72rem', color: '#74806E' }}>77 Fully cleared | 31 In progress</div>
+            <div style={{ fontSize: '0.72rem', color: '#74806E' }}>
+              {completedStudents} Fully cleared | {roster.length - completedStudents} In progress
+            </div>
           </div>
         </div>
 
         {/* Enrollment Progress */}
         <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '1.2rem' }}>
           <div style={{ fontSize: '0.68rem', color: '#74806E', fontWeight: 'bold' }}>TERM ENROLLMENT PROGRESS</div>
-          <div style={{ fontSize: '1.8rem', fontWeight: '800', color: '#29352A' }}>38 <span style={{ fontSize: '0.85rem', color: '#74806E', fontWeight: 'normal' }}>/ 77 validated</span></div>
-          <div style={{ fontSize: '0.7rem', color: '#A77218' }}>39 waiting for chair sign-off</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: '800', color: '#29352A' }}>0 <span style={{ fontSize: '0.85rem', color: '#74806E', fontWeight: 'normal' }}>/ 0 validated</span></div>
+          <div style={{ fontSize: '0.7rem', color: '#A77218' }}>0 waiting for chair sign-off</div>
         </div>
 
         {/* Bar Chart Representation */}
         <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '1.2rem' }}>
           <div style={{ fontSize: '0.68rem', color: '#74806E', fontWeight: 'bold', marginBottom: '0.5rem' }}>STUDENTS CLEARED PER STEP</div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '42px', paddingInline: '0.5rem' }}>
-            <Bar h="90%" label="118" />
-            <Bar h="80%" label="112" />
-            <Bar h="70%" label="104" />
-            <Bar h="60%" label="96" active />
-            <Bar h="50%" label="88" />
-            <Bar h="40%" label="77" />
+            <Bar h="0%" label="0" />
+            <Bar h="0%" label="0" />
+            <Bar h="0%" label="0" />
+            <Bar h="0%" label="0" active />
+            <Bar h="0%" label="0" />
+            <Bar h="0%" label="0" />
           </div>
         </div>
 

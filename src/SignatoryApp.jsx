@@ -6,8 +6,17 @@ import SIG3 from './SIG3.jsx'
 import SIG5 from './SIG-5.jsx'
 import './signatory-responsive.css'
 
+const currentUser = {
+  firstName: 'Maria',
+  lastName: 'Santos',
+  title: 'Prof.',
+  role: 'PROGRAM CHAIR',
+}
+
 export default function SignatoryApp() {
   const [activePage, setActivePage] = useState('SIG1')
+
+  const profileName = `${currentUser.title} ${currentUser.firstName} ${currentUser.lastName}`
 
   let page
   switch (activePage) {
@@ -22,13 +31,19 @@ export default function SignatoryApp() {
       break
     case 'SIG1':
     default:
-      page = <SIG1 onNavigateToQueue={() => setActivePage('SIG2')} />
+      page = (
+        <SIG1
+          profile={currentUser}
+          onNavigateToQueue={() => setActivePage('SIG2')}
+        />
+      )
   }
 
   return (
     <SignatoryLayout
       activePage={activePage}
       onSelectPage={setActivePage}
+      profile={{ ...currentUser, displayName: profileName }}
     >
       {page}
     </SignatoryLayout>

@@ -7,13 +7,18 @@ const navTabs = [
   { id: 'SIG5', label: 'Cohort Overview', badge: 'CHAIR' },
 ];
 
-export default function SignatoryLayout({ activePage, onSelectPage, children }) {
+export default function SignatoryLayout({ activePage, onSelectPage, profile, children }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [filterTab, setFilterTab] = useState('All');
   const [notifications, setNotifications] = useState([]);
 
   const unreadCount = notifications.filter((notification) => notification.unread).length;
+  const notificationTabs = [
+    { label: 'All', count: notifications.length },
+    { label: 'Unread', count: unreadCount },
+  ];
+  const profileInitials = `${profile.firstName[0]}${profile.lastName[0]}`.toUpperCase();
 
   const addSampleNotification = () => {
     setNotifications((current) => [
@@ -24,9 +29,6 @@ export default function SignatoryLayout({ activePage, onSelectPage, children }) 
         time: 'Just now',
         group: 'TODAY',
         unread: true,
-        iconBg: '#E2F1F7',
-        iconColor: '#3E7E9C',
-        icon: '🔔',
       },
       ...current,
     ]);
@@ -152,7 +154,6 @@ export default function SignatoryLayout({ activePage, onSelectPage, children }) 
               position: 'relative'
             }}
           >
-            🔔
             {unreadCount > 0 && (
               <span style={{
                 position: 'absolute',
@@ -201,11 +202,11 @@ export default function SignatoryLayout({ activePage, onSelectPage, children }) 
               fontWeight: 'bold',
               fontSize: '0.85rem'
             }}>
-              MS
+              {profileInitials}
             </div>
             <div>
-              <div className="signatory-profile-copy" style={{ fontSize: '0.8rem', fontWeight: '700', lineHeight: 1.1 }}>Prof. Maria Santos</div>
-              <div className="signatory-profile-copy" style={{ fontSize: '0.65rem', color: '#B6C798' }}>PROGRAM CHAIR</div>
+              <div className="signatory-profile-copy" style={{ fontSize: '0.8rem', fontWeight: '700', lineHeight: 1.1 }}>{profile.displayName}</div>
+              <div className="signatory-profile-copy" style={{ fontSize: '0.65rem', color: '#B6C798' }}>{profile.role}</div>
             </div>
             <span style={{ fontSize: '0.7rem' }}>▼</span>
           </button>
@@ -223,10 +224,10 @@ export default function SignatoryLayout({ activePage, onSelectPage, children }) 
               zIndex: 100,
               minWidth: '180px'
             }}>
-              <button onClick={() => alert('Viewing Profile Details')} style={{ width: '100%', textAlign: 'left', padding: '0.5rem 0.8rem', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.82rem' }}>👤 My Profile</button>
-              <button onClick={() => alert('Navigated to Settings')} style={{ width: '100%', textAlign: 'left', padding: '0.5rem 0.8rem', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.82rem' }}>⚙️ Chair Settings</button>
+              <button onClick={() => alert('Viewing Profile Details')} style={{ width: '100%', textAlign: 'left', padding: '0.5rem 0.8rem', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.82rem' }}>My Profile</button>
+              <button onClick={() => alert('Navigated to Settings')} style={{ width: '100%', textAlign: 'left', padding: '0.5rem 0.8rem', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.82rem' }}>Chair Settings</button>
               <hr style={{ margin: '0.3rem 0', borderColor: '#EDF1E8' }} />
-              <button onClick={() => alert('Logged Out')} style={{ width: '100%', textAlign: 'left', padding: '0.5rem 0.8rem', border: 'none', background: 'none', color: '#AA5757', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 'bold' }}>🚪 Log Out</button>
+              <button onClick={() => alert('Logged Out')} style={{ width: '100%', textAlign: 'left', padding: '0.5rem 0.8rem', border: 'none', background: 'none', color: '#AA5757', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 'bold' }}>Log Out</button>
             </div>
           )}
 
@@ -313,15 +314,15 @@ export default function SignatoryLayout({ activePage, onSelectPage, children }) 
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
                 <div style={{ display: 'flex', gap: '0.3rem', backgroundColor: '#EDF1E8', padding: '0.2rem', borderRadius: '20px' }}>
-                  {['All', 'Unread'].map((tab) => (
+                  {notificationTabs.map((tab) => (
                     <button
-                      key={tab}
+                      key={tab.label}
                       type="button"
-                      aria-pressed={filterTab === tab}
-                      onClick={() => setFilterTab(tab)}
+                      aria-pressed={filterTab === tab.label}
+                      onClick={() => setFilterTab(tab.label)}
                       style={{
-                        backgroundColor: filterTab === tab ? '#293B2A' : 'transparent',
-                        color: filterTab === tab ? '#FFF' : '#29352A',
+                        backgroundColor: filterTab === tab.label ? '#293B2A' : 'transparent',
+                        color: filterTab === tab.label ? '#FFF' : '#29352A',
                         border: 'none',
                         padding: '0.3rem 0.8rem',
                         borderRadius: '16px',
@@ -330,7 +331,7 @@ export default function SignatoryLayout({ activePage, onSelectPage, children }) 
                         cursor: 'pointer',
                       }}
                     >
-                      {tab}
+                      {tab.label} ({tab.count})
                     </button>
                   ))}
                 </div>
@@ -379,8 +380,7 @@ export default function SignatoryLayout({ activePage, onSelectPage, children }) 
               )}
               {displayedNotifications.length === 0 && (
                 <div style={{ textAlign: 'center', color: '#74806E', padding: '3rem 1rem', fontSize: '0.85rem' }}>
-                  <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔕</div>
-                  <strong>No new notifications</strong>
+                  <strong>{filterTab === 'Unread' ? 'No unread notifications' : 'No notifications yet'}</strong>
                   <p style={{ margin: '0.4rem 0 0', fontSize: '0.78rem', opacity: 0.8 }}>
                     You will be notified here once someone submits an approval request or clearance proof.
                   </p>
@@ -438,20 +438,6 @@ function NotificationGroup({ title, items, onMarkAsRead }) {
               cursor: 'pointer',
             }}
           >
-            <span style={{
-              width: 34,
-              height: 34,
-              borderRadius: '50%',
-              backgroundColor: item.iconBg,
-              color: item.iconColor,
-              display: 'grid',
-              placeItems: 'center',
-              flexShrink: 0,
-              fontWeight: 'bold',
-              fontSize: '0.85rem',
-            }}>
-              {item.icon}
-            </span>
             <span style={{ flex: 1 }}>
               <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <span style={{ fontWeight: '700', fontSize: '0.82rem', color: '#29352A', lineHeight: 1.2 }}>

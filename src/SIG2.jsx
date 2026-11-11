@@ -7,16 +7,8 @@ export default function SIG2() {
   const [currentPage, setCurrentPage] = useState(1);
   const [inspectingStudent, setInspectingStudent] = useState(null);
 
-  const [students, setStudents] = useState([
-    { id: '2024-00101', name: 'Ana Reyes', program: 'BSIT 3-A', req: 'Program Chair Approval', status: 'Pending', fee: '—', proof: false },
-    { id: '2024-00117', name: 'Luis Dela Cruz', program: 'BSIT 3-A', req: 'Program Chair Approval', status: 'Under Review', fee: 'PHP 150.00', proof: true, proofDetails: 'Unreturned library book' },
-    { id: '2024-00132', name: 'Carla Mendoza', program: 'BSIS 2-B', req: 'Program Chair Approval', status: 'Deficiency', fee: 'PHP 300.00', proof: false, proofDetails: 'Laboratory fee' },
-    { id: '2024-00143', name: 'Mark Villanueva', program: 'BSIT 3-C', req: 'Program Chair Approval', status: 'Pending', fee: '—', proof: false, note: '⚠️ Awaiting Adviser sign-off' },
-    { id: '2024-00158', name: 'Joy Ramirez', program: 'BSIS 2-A', req: 'Program Chair Approval', status: 'Pending', fee: '—', proof: false },
-    { id: '2024-00163', name: 'Rico Santos', program: 'BSIT 3-B', req: 'Program Chair Approval', status: 'Cleared', fee: '—', proof: false },
-    { id: '2024-00171', name: 'Nina Flores', program: 'BSIT 3-A', req: 'Program Chair Approval', status: 'Under Review', fee: 'PHP 300.00', proof: true, proofDetails: 'Laboratory fee' },
-    { id: '2024-00189', name: 'Paolo Garcia', program: 'BSIS 2-B', req: 'Program Chair Approval', status: 'Deficiency', fee: 'No amount due', proof: false, proofDetails: 'Overdue book: Operating System Concepts' },
-  ]);
+  const [students, setStudents] = useState([]);
+  const pageSize = 8;
 
   const updateStudentStatus = (id, newStatus) => {
     setStudents(prev => prev.map(s => s.id === id ? { ...s, status: newStatus } : s));
@@ -29,6 +21,11 @@ export default function SIG2() {
     const matchesStatus = selectedStatus === 'All' || s.status === selectedStatus;
     return matchesSearch && matchesProgram && matchesStatus;
   });
+  const pageCount = Math.max(1, Math.ceil(filteredStudents.length / pageSize));
+  const activePage = Math.min(currentPage, pageCount);
+  const firstRecord = filteredStudents.length === 0 ? 0 : (activePage - 1) * pageSize + 1;
+  const lastRecord = Math.min(activePage * pageSize, filteredStudents.length);
+  const paginatedStudents = filteredStudents.slice((activePage - 1) * pageSize, activePage * pageSize);
 
   return (
     <div className="signatory-approval-page" style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '1.2rem' }}>
@@ -41,38 +38,49 @@ export default function SIG2() {
           <input
             type="text"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="🔍 Name or Student ID"
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setCurrentPage(1);
+            }}
+            placeholder="Name or Student ID"
             style={{ width: '100%', padding: '0.6rem 0.8rem', borderRadius: '10px', border: '1px solid #E2E7DC', fontSize: '0.8rem', margin: '0.4rem 0 1rem 0', boxSizing: 'border-box' }}
           />
 
           <label style={{ fontSize: '0.68rem', fontWeight: '800', color: '#74806E', letterSpacing: '0.05em' }}>ACADEMIC PROGRAM</label>
           <select
             value={selectedProgram}
-            onChange={(e) => setSelectedProgram(e.target.value)}
+            onChange={(e) => {
+              setSelectedProgram(e.target.value);
+              setCurrentPage(1);
+            }}
             style={{ width: '100%', padding: '0.6rem 0.8rem', borderRadius: '10px', border: '1px solid #E2E7DC', fontSize: '0.8rem', margin: '0.4rem 0 1rem 0', boxSizing: 'border-box', backgroundColor: '#F6F8F4' }}
           >
             <option>All Programs</option>
             <option>BSIT</option>
             <option>BSIS</option>
-            <option>BSCS</option>
+
           </select>
 
           <label style={{ fontSize: '0.68rem', fontWeight: '800', color: '#74806E', letterSpacing: '0.05em' }}>STATUS</label>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginTop: '0.4rem' }}>
             {[
-              { id: 'All', label: 'All', count: 62 },
-              { id: 'Pending', label: 'Pending', count: 26 },
-              { id: 'Under Review', label: 'Under Review', count: 9 },
-              { id: 'Deficiency', label: 'Deficiency', count: 17 },
-              { id: 'Cleared', label: 'Cleared', count: 8 },
+              { id: 'All', label: 'All', count: students.length },
+              { id: 'Pending', label: 'Pending', count: students.filter((student) => student.status === 'Pending').length },
+              { id: 'Under Review', label: 'Under Review', count: students.filter((student) => student.status === 'Under Review').length },
+              { id: 'Deficiency', label: 'Deficiency', count: students.filter((student) => student.status === 'Deficiency').length },
+              { id: 'Cleared', label: 'Cleared', count: students.filter((student) => student.status === 'Cleared').length },
             ].map((st) => (
               <button
                 key={st.id}
-                onClick={() => setSelectedStatus(st.id)}
+                onClick={() => {
+                  setSelectedStatus(st.id);
+                  setCurrentPage(1);
+                }}
                 style={{
                   display: 'flex',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: '0.75rem',
                   padding: '0.5rem 0.8rem',
                   borderRadius: '10px',
                   border: 'none',
@@ -127,7 +135,7 @@ export default function SIG2() {
             </tr>
           </thead>
           <tbody>
-            {filteredStudents.map((st) => (
+            {paginatedStudents.map((st) => (
               <tr key={st.id} style={{ borderBottom: '1px solid #F6F8F4' }}>
                 
                 {/* Student Info */}
@@ -246,19 +254,38 @@ export default function SIG2() {
 
         {/* Pagination Footer */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.2rem', fontSize: '0.78rem', color: '#74806E' }}>
-          <span>Showing 1–8 of 62 records</span>
+          <span>Showing {firstRecord}–{lastRecord} of {filteredStudents.length} records</span>
           <div style={{ display: 'flex', gap: '0.3rem' }}>
-            {[1, 2, 3, '...', 8].map((page, i) => (
+            <button
+              type="button"
+              aria-label="Previous page"
+              disabled={activePage === 1}
+              onClick={() => setCurrentPage(activePage - 1)}
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: '6px',
+                border: 'none',
+                backgroundColor: '#EDF1E8',
+                color: activePage === 1 ? '#929B8C' : '#29352A',
+                cursor: activePage === 1 ? 'not-allowed' : 'pointer'
+              }}
+            >
+              ‹
+            </button>
+            {Array.from({ length: pageCount }, (_, index) => index + 1).map((page) => (
               <button
-                key={i}
-                onClick={() => typeof page === 'number' && setCurrentPage(page)}
+                key={page}
+                type="button"
+                aria-current={activePage === page ? 'page' : undefined}
+                onClick={() => setCurrentPage(page)}
                 style={{
                   width: 28,
                   height: 28,
                   borderRadius: '6px',
                   border: 'none',
-                  backgroundColor: currentPage === page ? '#293B2A' : '#EDF1E8',
-                  color: currentPage === page ? '#FFF' : '#29352A',
+                  backgroundColor: activePage === page ? '#293B2A' : '#EDF1E8',
+                  color: activePage === page ? '#FFF' : '#29352A',
                   fontWeight: '700',
                   cursor: 'pointer'
                 }}
@@ -266,6 +293,23 @@ export default function SIG2() {
                 {page}
               </button>
             ))}
+            <button
+              type="button"
+              aria-label="Next page"
+              disabled={activePage === pageCount}
+              onClick={() => setCurrentPage(activePage + 1)}
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: '6px',
+                border: 'none',
+                backgroundColor: '#EDF1E8',
+                color: activePage === pageCount ? '#929B8C' : '#29352A',
+                cursor: activePage === pageCount ? 'not-allowed' : 'pointer'
+              }}
+            >
+              ›
+            </button>
           </div>
         </div>
 

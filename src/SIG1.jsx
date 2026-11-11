@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function SIG1({ onNavigateToQueue }) {
-  const [queue, setQueue] = useState([
-    { id: '2024-00101', name: 'Ana Reyes', course: 'BSIT 3-A', req: 'Program Chair Approval', status: 'Pending', statusColor: '#FFF3DC', textColor: '#A77218' },
-    { id: '2024-00117', name: 'Luis Dela Cruz', course: 'BSIT 3-A', req: 'Program Chair Approval', status: 'Under Review', statusColor: '#E2F1F7', textColor: '#3E7E9C' },
-    { id: '2024-00132', name: 'Carla Mendoza', course: 'BSIS 2-B', req: 'Program Chair Approval', status: 'Deficiency', statusColor: '#FAE8E5', textColor: '#AA5757' },
-    { id: '2024-00143', name: 'Mark Villanueva', course: 'BSIT 3-C', req: 'Program Chair Approval', status: 'Pending', statusColor: '#FFF3DC', textColor: '#A77218' },
-    { id: '2024-00158', name: 'Joy Ramirez', course: 'BSIS 2-A', req: 'Program Chair Approval', status: 'Pending', statusColor: '#FFF3DC', textColor: '#A77218' },
-  ]);
+export default function SIG1({ profile, onNavigateToQueue }) {
+  const [queue, setQueue] = useState([]);
+  const [currentTime, setCurrentTime] = useState(() => new Date());
 
-  const [approvedCount, setApprovedCount] = useState(212);
-  const [pendingCount, setPendingCount] = useState(48);
+  const [approvedCount, setApprovedCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [activity, setActivity] = useState([]);
+  const activeDeficiencies = queue.filter((student) => student.status === 'Deficiency').length;
+  const pendingSettlementProofs = queue.filter((student) => student.proof === true).length;
+  const hour = currentTime.getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+
+  useEffect(() => {
+    const timerId = window.setInterval(() => setCurrentTime(new Date()), 60_000);
+    return () => window.clearInterval(timerId);
+  }, []);
 
   const handleApprove = (studentId) => {
+    const student = queue.find((item) => item.id === studentId);
+    if (!student || student.status === 'Approved') return;
+
     setQueue(prev => prev.map(item => item.id === studentId ? { ...item, status: 'Approved', statusColor: '#E5F3E8', textColor: '#458469' } : item));
     setApprovedCount(c => c + 1);
     setPendingCount(c => Math.max(0, c - 1));
+    setActivity((current) => [
+      {
+        id: `${studentId}-${Date.now()}`,
+        color: '#458469',
+        title: `Signed off ${student.name}`,
+        sub: 'Program Chair Approval · Just now',
+      },
+      ...current,
+    ]);
   };
 
   return (
@@ -37,15 +54,15 @@ export default function SIG1({ onNavigateToQueue }) {
 
           <StatCard
             title="Active Deficiencies"
-            value="17"
-            sub="5 with an amount due"
+            value={activeDeficiencies}
+            sub="Awaiting resolution"
             accent="#AA5757"
             icon="⚠️"
           />
 
           <StatCard
             title="Pending Settlement Proofs"
-            value="9"
+            value={pendingSettlementProofs}
             sub="Awaiting receipt verification"
             accent="#3E7E9C"
             icon="📄"
@@ -144,7 +161,7 @@ export default function SIG1({ onNavigateToQueue }) {
             1ST SEMESTER, AY 2026-2027 • SEMESTRAL CLEARANCE
           </div>
           <h2 style={{ fontSize: '1.35rem', margin: '0.6rem 0 0.4rem 0', letterSpacing: '-0.02em' }}>
-            Good morning, Prof. Santos
+            {greeting}, {profile.title} {profile.lastName}
           </h2>
           <p style={{ fontSize: '0.82rem', color: '#DCE5D2', margin: '0 0 1.2rem 0' }}>
             You have {pendingCount} students waiting at Step 4.
@@ -170,16 +187,18 @@ export default function SIG1({ onNavigateToQueue }) {
         <div style={{ backgroundColor: '#FFFFFF', borderRadius: '24px', padding: '1.5rem', flex: 1, boxShadow: '0 4px 14px rgba(0,0,0,0.03)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.2rem' }}>
             <h4 style={{ margin: 0, fontSize: '0.95rem', color: '#29352A' }}>Activity Stream</h4>
-            <button onClick={() => alert('Showing all recent activity logs')} style={{ background: 'none', border: 'none', color: '#74806E', fontSize: '0.75rem', cursor: 'pointer' }}>See all</button>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <ActivityItem color="#458469" title="Signed off Ana Reyes" sub="Program Chair Approval · 10 min ago" />
-            <ActivityItem color="#AA5757" title="Flagged deficiency for Carla Mendoza" sub="Amount due: PHP 150.00 · 42 min ago" />
-            <ActivityItem color="#3E7E9C" title="Proof submitted by Luis Dela Cruz" sub="Receipt awaiting verification · 1 hr ago" />
-            <ActivityItem color="#458469" title="Proof approved for Rico Santos" sub="Requirement marked as cleared · 2 hrs ago" />
-            <ActivityItem color="#458469" title="Signed off Joy Ramirez" sub="Program Chair Approval · 3 hrs ago" />
-            <ActivityItem color="#A77218" title="New student entered your stage" sub="Mark Villanueva · Yesterday" />
+            {activity.length === 0 ? (
+              <p style={{ margin: 0, fontSize: '0.8rem', color: '#74806E' }}>
+                No recent activity.
+              </p>
+            ) : (
+              activity.map((item) => (
+                <ActivityItem key={item.id} color={item.color} title={item.title} sub={item.sub} />
+              ))
+            )}
           </div>
         </div>
 
