@@ -1,187 +1,278 @@
-﻿import { useState } from "react";
-import { Plus, Pencil, Trash2, ShieldCheck, X, Save } from "lucide-react";
+import { useState } from "react";
+import { Search, UserPlus, MoreHorizontal, AlertTriangle, ChevronRight } from "lucide-react";
 import "./SignatoryRoles.css";
 
-const INITIAL_ROLES = [
-  { id: 1, office: "Library", role: "Librarians", signatories: ["Ms. Cruz", "Mr. Reyes"], order: 1, active: true },
-  { id: 2, office: "Cashier", role: "Cashiers", signatories: ["Ms. Santos"], order: 2, active: true },
-  { id: 3, office: "Adviser", role: "Advisers", signatories: ["Dr. Garcia", "Prof. Torres"], order: 3, active: true },
-  { id: 4, office: "Program Chair", role: "Program Chairs", signatories: ["Dr. Lim"], order: 4, active: true },
-  { id: 5, office: "Governor", role: "Governors", signatories: ["Mr. Aquino"], order: 5, active: true },
-  { id: 6, office: "Dean", role: "Deans", signatories: ["Dr. Villanueva"], order: 6, active: true },
+/* ── Mock data matching the designer mockup ── */
+const ROLES = [
+  {
+    id: 1, step: 1, name: "Librarians",    subtitle: "Library Clearance",
+    totalStaff: 6, coveredInstitutes: 3, totalInstitutes: 3,
+    staff: [
+      { id: 1, initials: "HC", color: "#6a8f5a", name: "Henry Co",        username: "hco",    institute: "Institute of Computing",  program: "All Programs", assignedOn: "Aug 14, 2026", status: "Active" },
+      { id: 2, initials: "GR", color: "#7a6a9a", name: "Grace Rivera",    username: "grivera", institute: "Institute of Education",   program: "All Programs", assignedOn: "Aug 14, 2026", status: "Active" },
+    ],
+    uncovered: [],
+    coverageBar: 1.0,
+  },
+  {
+    id: 2, step: 2, name: "Cashiers",      subtitle: "Cashier Clearance",
+    totalStaff: 4, coveredInstitutes: 3, totalInstitutes: 3,
+    staff: [
+      { id: 1, initials: "GB", color: "#8a6a5a", name: "Grace Bautista",  username: "gbautista", institute: "Institute of Computing", program: "All Programs", assignedOn: "Aug 14, 2026", status: "Active" },
+    ],
+    uncovered: [],
+    coverageBar: 1.0,
+  },
+  {
+    id: 3, step: 3, name: "Advisers",      subtitle: "Adviser Approval",
+    totalStaff: 38, coveredInstitutes: 5, totalInstitutes: 5,
+    staff: [],
+    uncovered: [],
+    coverageBar: 1.0,
+  },
+  {
+    id: 4, step: 4, name: "Program Chairs", subtitle: "Program Chair Approval",
+    totalStaff: 4, coveredInstitutes: 4, totalInstitutes: 5,
+    staff: [
+      { id: 1, initials: "MS", color: "#6a8f5a", name: "Prof. Maria Santos",  username: "msantos",  institute: "Institute of Computing",  program: "BSIT", assignedOn: "Aug 14, 2026", status: "Active" },
+      { id: 2, initials: "DO", color: "#5a7a9a", name: "Prof. Daniel Ocampo", username: "docampo",  institute: "Institute of Computing",  program: "BSIS", assignedOn: "Aug 14, 2026", status: "Active" },
+      { id: 3, initials: "TL", color: "#9a7a5a", name: "Prof. Teresa Lim",    username: "tlim",     institute: "Institute of Education",  program: "BEED", assignedOn: "Aug 21, 2026", status: "Active" },
+      { id: 4, initials: "RA", color: "#7a5a9a", name: "Prof. Roberto Aquino",username: "raquino",  institute: "Institute of Education",  program: "BSED", assignedOn: "Aug 21, 2026", status: "Inactive" },
+    ],
+    uncovered: [{ program: "BSBA", institute: "Institute of Business" }],
+    coverageBar: 4 / 5,
+  },
+  {
+    id: 5, step: 5, name: "Governors",     subtitle: "Institute Governor Clearance",
+    totalStaff: 3, coveredInstitutes: 3, totalInstitutes: 3,
+    staff: [],
+    uncovered: [],
+    coverageBar: 1.0,
+  },
+  {
+    id: 6, step: 6, name: "Deans",         subtitle: "Institute Dean Clearance",
+    totalStaff: 3, coveredInstitutes: 3, totalInstitutes: 3,
+    staff: [],
+    uncovered: [],
+    coverageBar: 1.0,
+  },
 ];
 
+const STATUS_CFG = {
+  Active:   { bg: "rgba(74,124,63,0.13)",  color: "#2f6b25", dot: "#4a7c3f" },
+  Inactive: { bg: "rgba(107,117,96,0.12)", color: "#555f4a", dot: "#8a9280" },
+};
+
 export default function SignatoryRoles() {
-  const [roles, setRoles] = useState(INITIAL_ROLES);
-  const [showModal, setShowModal] = useState(false);
-  const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({ office: "", role: "", signatories: "", order: "" });
-  const [confirmDelete, setConfirmDelete] = useState(null);
+  const [selectedId, setSelectedId] = useState(4);
+  const [staffSearch, setStaffSearch] = useState("");
 
-  function openAdd() {
-    setEditing(null);
-    setForm({ office: "", role: "", signatories: "", order: "" });
-    setShowModal(true);
-  }
+  const selected = ROLES.find((r) => r.id === selectedId);
+  const uncoveredCount = ROLES.filter((r) => r.uncovered.length > 0).length;
 
-  function openEdit(r) {
-    setEditing(r.id);
-    setForm({ office: r.office, role: r.role, signatories: r.signatories.join(", "), order: r.order });
-    setShowModal(true);
-  }
-
-  function handleSave() {
-    if (!form.office || !form.role) return;
-    const sigs = form.signatories.split(",").map((s) => s.trim()).filter(Boolean);
-    if (editing) {
-      setRoles((prev) => prev.map((r) => r.id === editing ? { ...r, ...form, signatories: sigs, order: Number(form.order) } : r));
-    } else {
-      const newId = Math.max(...roles.map((r) => r.id)) + 1;
-      setRoles((prev) => [...prev, { id: newId, ...form, signatories: sigs, order: Number(form.order), active: true }]);
-    }
-    setShowModal(false);
-  }
-
-  function handleDelete(id) {
-    setRoles((prev) => prev.filter((r) => r.id !== id));
-    setConfirmDelete(null);
-  }
-
-  function toggleActive(id) {
-    setRoles((prev) => prev.map((r) => r.id === id ? { ...r, active: !r.active } : r));
-  }
-
-  const sortedRoles = [...roles].sort((a, b) => a.order - b.order);
+  const filteredStaff = selected
+    ? selected.staff.filter((s) =>
+        staffSearch === "" ||
+        s.name.toLowerCase().includes(staffSearch.toLowerCase()) ||
+        s.username.toLowerCase().includes(staffSearch.toLowerCase())
+      )
+    : [];
 
   return (
-    <div className="sr-page">
-      <div className="sr-page-header">
-        <div>
-          <h1 className="sr-title">Signatory Roles</h1>
-          <p className="sr-sub">Configure the offices and personnel authorized to clear students in each step.</p>
-        </div>
-        <button className="sr-add-btn" onClick={openAdd}>
-          <Plus size={15} />
-          Add Role
-        </button>
-      </div>
+    <div className="sr2-page">
+      <div className="sr2-layout">
 
-      <div className="sr-table-card">
-        <table className="sr-table">
-          <thead>
-            <tr>
-              <th>Step</th>
-              <th>Office</th>
-              <th>Role Name</th>
-              <th>Authorized Signatories</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedRoles.map((r) => (
-              <tr key={r.id} className={!r.active ? "inactive-row" : ""}>
-                <td>
-                  <div className="sr-step-num">{r.order}</div>
-                </td>
-                <td className="sr-office">{r.office}</td>
-                <td>
-                  <span className="sr-role-pill">{r.role}</span>
-                </td>
-                <td>
-                  <div className="sr-sigs">
-                    {r.signatories.map((s) => (
-                      <span key={s} className="sr-sig-tag">{s}</span>
-                    ))}
+        {/* ══ LEFT PANEL – Role list ══ */}
+        <div className="sr2-left">
+          <div className="sr2-left-header">
+            <h2 className="sr2-left-title">Clearance Roles</h2>
+            <p className="sr2-left-sub">In approval order · select a role to manage its staff</p>
+          </div>
+
+          <div className="sr2-role-list">
+            {ROLES.map((role) => (
+              <button
+                key={role.id}
+                className={"sr2-role-item" + (selectedId === role.id ? " selected" : "")}
+                onClick={() => { setSelectedId(role.id); setStaffSearch(""); }}
+              >
+                <div className="sr2-role-step">{role.step}</div>
+                <div className="sr2-role-info">
+                  <div className="sr2-role-name">{role.name}</div>
+                  <div className="sr2-role-subtitle">{role.subtitle}</div>
+                  <div className="sr2-role-bar-wrap">
+                    <div
+                      className="sr2-role-bar-fill"
+                      style={{ width: `${role.coverageBar * 100}%` }}
+                    />
                   </div>
-                </td>
-                <td>
-                  <button
-                    className={"sr-status-toggle" + (r.active ? " active" : "")}
-                    onClick={() => toggleActive(r.id)}
-                  >
-                    {r.active ? "Active" : "Inactive"}
-                  </button>
-                </td>
-                <td>
-                  <div className="sr-actions">
-                    <button className="sr-action-btn edit" onClick={() => openEdit(r)} title="Edit">
-                      <Pencil size={13} />
-                    </button>
-                    <button className="sr-action-btn delete" onClick={() => setConfirmDelete(r.id)} title="Delete">
-                      <Trash2 size={13} />
-                    </button>
+                  <div className="sr2-role-coverage">
+                    {role.coveredInstitutes} of {role.totalInstitutes} {role.totalInstitutes === 5 ? "programs" : "institutes"}
                   </div>
-                </td>
-              </tr>
+                </div>
+                <div className="sr2-role-count">
+                  <span className="sr2-role-count-num">{role.totalStaff}</span>
+                  <span className="sr2-role-count-label">staff</span>
+                </div>
+              </button>
             ))}
-          </tbody>
-        </table>
+          </div>
+
+          {/* Warning banner */}
+          {uncoveredCount > 0 && (
+            <div className="sr2-warning-banner">
+              <AlertTriangle size={14} />
+              <div>
+                <strong>{uncoveredCount} of {ROLES.length} roles fully covered</strong>
+                <div className="sr2-warning-detail">
+                  Program Chair has no signatory for BSBA, so students in that program cannot pass Step 4.
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ══ RIGHT PANEL – Detail view ══ */}
+        {selected && (
+          <div className="sr2-right">
+            {/* Step label + Title */}
+            <div className="sr2-detail-header">
+              <div>
+                <div className="sr2-step-label">STEP {selected.step} OF {ROLES.length} · AUTHORIZING ROLE</div>
+                <h1 className="sr2-detail-title">{selected.name}</h1>
+                <p className="sr2-detail-desc">
+                  {selected.step === 4
+                    ? "Department-level sign-off. Each Program Chair approves students in their own program and validates term enrollment."
+                    : `Step ${selected.step} clearance — ${selected.subtitle}.`}
+                </p>
+              </div>
+              <button className="sr2-assign-btn">
+                <UserPlus size={15} /> Assign Staff
+              </button>
+            </div>
+
+            {/* Stats */}
+            <div className="sr2-stats-row">
+              <div className="sr2-stat-box green-left">
+                <div className="sr2-stat-num">{selected.totalStaff}</div>
+                <div className="sr2-stat-label">Assigned staff</div>
+              </div>
+              <div className="sr2-stat-box teal-left">
+                <div className="sr2-stat-num">{selected.staff.filter(s => s.status === "Active").length}</div>
+                <div className="sr2-stat-label">Active signatories</div>
+              </div>
+              <div className="sr2-stat-box yellow-left">
+                <div className="sr2-stat-num">{selected.coveredInstitutes}/{selected.totalInstitutes}</div>
+                <div className="sr2-stat-label">Programs covered</div>
+              </div>
+              <div className="sr2-stat-box blue-left">
+                <div className="sr2-stat-num">102</div>
+                <div className="sr2-stat-label">Open Items at Step {selected.step}</div>
+              </div>
+            </div>
+
+            {/* Staff filters */}
+            <div className="sr2-staff-filters">
+              <div className="sr2-search-wrap">
+                <Search size={13} className="sr2-search-icon" />
+                <input
+                  className="sr2-search"
+                  placeholder="Search staff or username"
+                  value={staffSearch}
+                  onChange={(e) => setStaffSearch(e.target.value)}
+                />
+              </div>
+              <select className="sr2-select">
+                <option>All Institutes</option>
+                <option>Institute of Computing</option>
+                <option>Institute of Education</option>
+                <option>Institute of Business</option>
+              </select>
+              <select className="sr2-select">
+                <option>All Statuses</option>
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+              <span className="sr2-staff-count">{filteredStaff.length} assignments</span>
+            </div>
+
+            {/* Staff table */}
+            <div className="sr2-staff-table-wrap">
+              <table className="sr2-staff-table">
+                <thead>
+                  <tr>
+                    <th>Staff</th>
+                    <th>Institute</th>
+                    <th>Program</th>
+                    <th>Assigned On</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStaff.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="sr2-empty">No staff assigned to this role yet.</td>
+                    </tr>
+                  ) : (
+                    filteredStaff.map((s) => {
+                      const cfg = STATUS_CFG[s.status] || STATUS_CFG.Inactive;
+                      return (
+                        <tr key={s.id}>
+                          <td>
+                            <div className="sr2-staff-cell">
+                              <div className="sr2-staff-avatar" style={{ background: s.color }}>
+                                {s.initials}
+                              </div>
+                              <div>
+                                <div className="sr2-staff-name">{s.name}</div>
+                                <div className="sr2-staff-username">{s.username} · Employee username</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="sr2-td-muted">{s.institute}</td>
+                          <td>
+                            <span className="sr2-program-pill">{s.program}</span>
+                          </td>
+                          <td className="sr2-td-muted">{s.assignedOn}</td>
+                          <td>
+                            <span className="sr2-status-badge" style={{ background: cfg.bg, color: cfg.color }}>
+                              <span className="sr2-status-dot" style={{ background: cfg.dot }} />
+                              {s.status}
+                            </span>
+                          </td>
+                          <td>
+                            <button className="sr2-more-btn"><MoreHorizontal size={14} /></button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Uncovered program warnings */}
+            {selected.uncovered.map((u, i) => (
+              <div key={i} className="sr2-uncovered-banner">
+                <div className="sr2-uncovered-info">
+                  <AlertTriangle size={15} className="sr2-uncovered-icon" />
+                  <div>
+                    <div className="sr2-uncovered-name">{u.program} · {u.institute}</div>
+                    <div className="sr2-uncovered-desc">No Program Chair assigned. Students in this program cannot pass Step {selected.step}.</div>
+                  </div>
+                </div>
+                <button className="sr2-assign-btn-sm">Assign Staff</button>
+              </div>
+            ))}
+
+            {/* Footer note */}
+            <div className="sr2-footer-note">
+              <span>🔒</span> Signatories only see students inside the institute and program they are assigned to.
+            </div>
+          </div>
+        )}
       </div>
-
-      {/* Add/Edit Modal */}
-      {showModal && (
-        <div className="sr-modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="sr-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="sr-modal-header">
-              <div className="sr-modal-title-row">
-                <ShieldCheck size={18} className="sr-modal-icon" />
-                <h2 className="sr-modal-title">{editing ? "Edit Role" : "Add New Role"}</h2>
-              </div>
-              <button className="sr-modal-close" onClick={() => setShowModal(false)}>
-                <X size={16} />
-              </button>
-            </div>
-            <div className="sr-modal-body">
-              <div className="sr-form-field">
-                <label>Office Name</label>
-                <input className="sr-input" placeholder="e.g. Library" value={form.office} onChange={(e) => setForm((f) => ({ ...f, office: e.target.value }))} />
-              </div>
-              <div className="sr-form-field">
-                <label>Role Name</label>
-                <input className="sr-input" placeholder="e.g. Librarians" value={form.role} onChange={(e) => setForm((f) => ({ ...f, role: e.target.value }))} />
-              </div>
-              <div className="sr-form-field">
-                <label>Signatories (comma-separated)</label>
-                <input className="sr-input" placeholder="e.g. Ms. Cruz, Mr. Reyes" value={form.signatories} onChange={(e) => setForm((f) => ({ ...f, signatories: e.target.value }))} />
-              </div>
-              <div className="sr-form-field">
-                <label>Clearance Step Order</label>
-                <input className="sr-input" type="number" placeholder="e.g. 1" value={form.order} onChange={(e) => setForm((f) => ({ ...f, order: e.target.value }))} />
-              </div>
-            </div>
-            <div className="sr-modal-footer">
-              <button className="sr-cancel-btn" onClick={() => setShowModal(false)}>Cancel</button>
-              <button className="sr-save-btn" onClick={handleSave}>
-                <Save size={13} />
-                {editing ? "Save Changes" : "Add Role"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Delete confirmation */}
-      {confirmDelete && (
-        <div className="sr-modal-overlay" onClick={() => setConfirmDelete(null)}>
-          <div className="sr-modal small" onClick={(e) => e.stopPropagation()}>
-            <div className="sr-modal-header">
-              <h2 className="sr-modal-title">Delete Role</h2>
-              <button className="sr-modal-close" onClick={() => setConfirmDelete(null)}><X size={16} /></button>
-            </div>
-            <div className="sr-modal-body">
-              <p className="sr-delete-msg">Are you sure you want to delete this signatory role? This action cannot be undone.</p>
-            </div>
-            <div className="sr-modal-footer">
-              <button className="sr-cancel-btn" onClick={() => setConfirmDelete(null)}>Cancel</button>
-              <button className="sr-delete-confirm-btn" onClick={() => handleDelete(confirmDelete)}>
-                <Trash2 size={13} />
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

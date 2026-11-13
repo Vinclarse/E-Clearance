@@ -1,179 +1,195 @@
-﻿.templates-page {
-  padding: 20px 28px 32px;
+/* ═══════════════════════════════════════════
+   Clearance Templates  –  New Design (v2)
+   ═══════════════════════════════════════════ */
+
+.ct-page {
+  padding: 24px 28px 48px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
-/* ── Template Config Card ── */
-.template-config-card {
+/* ══ Template Config Card ══ */
+.ct-config-card {
   background: var(--bg-card);
   border-radius: 14px;
-  padding: 22px 24px;
+  padding: 20px 24px 22px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-color);
 }
 
-.template-config-header {
+.ct-config-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
-.template-config-title-row {
+.ct-config-title-row {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.template-config-title-row h2 {
-  font-size: 16px;
-  font-weight: 700;
+.ct-config-title {
+  font-size: 15px;
+  font-weight: 800;
   color: var(--text-primary);
+  margin: 0;
 }
 
-.draft-badge {
+.ct-draft-badge {
   background: #f0ede5;
-  color: var(--text-secondary);
+  color: #8a7a60;
   border: 1px solid #ddd9d0;
   border-radius: 999px;
   padding: 3px 10px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
 }
 
-.btn-save-draft {
+.ct-btn-save-draft {
   background: transparent;
   color: var(--text-primary);
   border: 1.5px solid var(--border-color);
   border-radius: 8px;
-  padding: 7px 16px;
+  padding: 8px 18px;
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
 }
-
-.btn-save-draft:hover {
+.ct-btn-save-draft:hover {
   border-color: var(--accent-olive);
   background: rgba(107,140,58,0.05);
 }
 
-.template-form-row {
+/* Form row */
+.ct-form-row {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   align-items: flex-end;
   flex-wrap: wrap;
 }
 
-.template-form-field {
+.ct-form-field {
   display: flex;
   flex-direction: column;
   gap: 5px;
   flex: 1;
-  min-width: 130px;
+  min-width: 120px;
 }
 
-.template-field-title {
-  flex: 2;
+.ct-field-wide {
+  flex: 2.5;
   min-width: 200px;
 }
 
-.template-form-field label,
-.year-levels-field label {
+.ct-label {
   font-size: 11px;
   font-weight: 600;
   color: var(--text-secondary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
-.template-text-input {
+.ct-text-input {
   border: 1.5px solid var(--border-color);
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 9px 12px;
   font-size: 13px;
   color: var(--text-primary);
-  background: white;
+  background: #fff;
+  font-family: inherit;
+  outline: none;
   transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
 }
+.ct-text-input:focus { border-color: var(--accent-olive); }
 
-.template-text-input:focus { border-color: var(--accent-olive); outline: none; }
-
-.template-select {
+.ct-select {
   border: 1.5px solid var(--border-color);
   border-radius: 8px;
-  padding: 8px 32px 8px 12px;
+  padding: 9px 32px 9px 12px;
   font-size: 13px;
   color: var(--text-primary);
-  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7560' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7560' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
   appearance: none;
   cursor: pointer;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
 }
+.ct-select:focus { border-color: var(--accent-olive); }
 
-.template-select:focus { border-color: var(--accent-olive); outline: none; }
-
-.year-levels-field {
+/* Year levels */
+.ct-year-levels-field {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  min-width: 220px;
+  flex: 2.5;
+  min-width: 240px;
 }
 
-.year-checkboxes {
+.ct-year-checkboxes {
   display: flex;
-  gap: 8px;
-  align-items: center;
+  gap: 7px;
   flex-wrap: wrap;
-  padding: 2px 0;
 }
 
-.year-checkbox-label {
+.ct-year-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   font-size: 12.5px;
+  font-weight: 600;
   color: var(--text-primary);
   cursor: pointer;
   user-select: none;
   border: 1.5px solid var(--border-color);
   border-radius: 8px;
-  padding: 6px 12px;
-  background: white;
-  transition: border-color 0.15s, background 0.15s;
+  padding: 7px 14px;
+  background: #fff;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  white-space: nowrap;
 }
 
-.year-checkbox-label.checked {
-  border-color: var(--accent-olive);
-  background: rgba(107,140,58,0.07);
+.ct-year-chip.checked {
+  border-color: var(--bg-navbar);
+  background: var(--bg-navbar);
+  color: #fff;
 }
 
-.year-checkbox-label input[type="checkbox"] {
-  width: 14px;
-  height: 14px;
-  accent-color: var(--accent-olive);
+.ct-checkbox {
+  width: 15px;
+  height: 15px;
+  accent-color: #fff;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
-/* ── Two-column layout ── */
-.templates-two-col {
+/* ══ Two-column layout ══ */
+.ct-two-col {
   display: grid;
   grid-template-columns: 1fr 300px;
-  gap: 18px;
+  gap: 16px;
   align-items: start;
 }
 
-/* ── Sequence Builder Card ── */
-.sequence-builder-card {
+/* ══ Sequence Builder Card ══ */
+.ct-builder-card {
   background: var(--bg-card);
   border-radius: 14px;
-  padding: 22px 24px 18px;
+  padding: 22px 22px 18px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-color);
 }
 
-.sequence-builder-header {
+.ct-builder-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -181,19 +197,20 @@
   gap: 12px;
 }
 
-.sequence-builder-header h3 {
+.ct-builder-title {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 3px;
+  margin: 0 0 3px;
 }
 
-.sequence-subtitle {
+.ct-builder-sub {
   font-size: 11.5px;
   color: var(--text-secondary);
+  margin: 0;
 }
 
-.reorder-btn {
+.ct-reorder-btn {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -207,40 +224,36 @@
   cursor: pointer;
   flex-shrink: 0;
   transition: border-color 0.15s, color 0.15s;
+  font-family: inherit;
 }
-
-.reorder-btn:hover {
+.ct-reorder-btn:hover {
   border-color: var(--accent-olive);
   color: var(--text-primary);
 }
 
-/* ── Step rows ── */
-.sequence-steps {
+/* Steps */
+.ct-steps {
   display: flex;
   flex-direction: column;
-  margin-bottom: 0;
 }
 
-.sequence-step {
+.ct-step {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 13px 4px;
+  padding: 13px 2px;
   border-bottom: 1px solid var(--border-color);
   transition: background 0.12s;
 }
-
-.sequence-step:last-child {
-  border-bottom: none;
-}
-
-.sequence-step:hover {
+.ct-step:last-child { border-bottom: none; }
+.ct-step:hover {
   background: #fafaf8;
   border-radius: 8px;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
-/* Drag handle */
-.drag-handle {
+.ct-drag-handle {
   color: #ccc8be;
   cursor: grab;
   user-select: none;
@@ -249,19 +262,17 @@
   flex-shrink: 0;
   transition: color 0.15s;
 }
+.ct-drag-handle:hover { color: #999; }
+.ct-drag-handle:active { cursor: grabbing; }
 
-.drag-handle:hover { color: #999; }
-.drag-handle:active { cursor: grabbing; }
-
-/* Step number badge */
-.step-num-circle {
+.ct-step-num {
   width: 28px;
   height: 28px;
   border-radius: 50%;
   background: #2d3a1e;
   color: #fff;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -269,51 +280,49 @@
   box-shadow: 0 1px 4px rgba(45,58,30,0.25);
 }
 
-/* Step info */
-.step-info {
+.ct-step-info {
   flex: 1;
   min-width: 0;
 }
 
-.step-title {
+.ct-step-title {
   font-size: 13px;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 2px;
+  margin: 0 0 2px;
 }
 
-.step-desc {
+.ct-step-desc {
   font-size: 11.5px;
   color: var(--text-secondary);
+  margin: 0;
 }
 
-/* Role block */
-.step-role-block {
+.ct-step-role-block {
   display: flex;
   align-items: center;
   gap: 7px;
   flex-shrink: 0;
+  border: 1.5px solid var(--border-color);
+  border-radius: 999px;
+  padding: 5px 12px;
+  background: #fff;
 }
 
-.step-role-label {
+.ct-step-role-label {
   font-size: 10.5px;
   color: var(--text-secondary);
   white-space: nowrap;
 }
 
-.step-role-pill {
-  background: #3a4a28;
-  color: #d4e6b0;
-  border-radius: 999px;
-  padding: 3px 12px;
+.ct-step-role-pill {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--text-primary);
   white-space: nowrap;
-  letter-spacing: 0.01em;
 }
 
-/* Lock + step note */
-.step-note {
+.ct-step-note {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -322,29 +331,29 @@
   justify-content: flex-end;
 }
 
-.lock-icon {
+.ct-lock-icon {
   color: var(--text-secondary);
   opacity: 0.55;
   flex-shrink: 0;
 }
 
-.step-note-text {
+.ct-step-note-text {
   font-size: 11px;
   color: var(--text-secondary);
   white-space: nowrap;
 }
 
-/* ── Footer ── */
-.sequence-footer {
+/* Builder footer */
+.ct-builder-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 16px;
+  padding-top: 14px;
   margin-top: 4px;
   border-top: 1px solid var(--border-color);
 }
 
-.sequence-count {
+.ct-step-count {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -353,9 +362,9 @@
   font-weight: 500;
 }
 
-.check-icon { color: #5a7a3a; }
+.ct-check-icon { color: #5a7a3a; }
 
-.btn-save-sequence {
+.ct-btn-save-seq {
   background: transparent;
   color: var(--text-primary);
   border: 1.5px solid var(--border-color);
@@ -365,152 +374,176 @@
   font-weight: 600;
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
 }
-
-.btn-save-sequence:hover {
+.ct-btn-save-seq:hover {
   border-color: var(--accent-olive);
   background: rgba(107,140,58,0.05);
 }
 
-/* ── Preview Card ── */
-.preview-card {
-  background: var(--bg-sidebar);
+/* ══ Preview Card (dark) ══ */
+.ct-preview-card {
+  background: #2d3a1e;
   border-radius: 14px;
   padding: 22px 20px 18px;
-  color: var(--text-on-dark);
-  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
+  gap: 0;
+  box-shadow: 0 4px 20px rgba(45,58,30,0.25);
 }
 
-.preview-ready-label {
+.ct-preview-ready {
   font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-on-dark-muted);
-  margin-bottom: 8px;
-}
-
-.preview-title {
-  font-size: 20px;
   font-weight: 800;
-  color: var(--text-on-dark);
-  margin-bottom: 3px;
-  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(212,230,176,0.6);
+  margin: 0 0 10px;
 }
 
-.preview-year {
+.ct-preview-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 3px;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+}
+
+.ct-preview-sub {
   font-size: 11.5px;
-  color: var(--text-on-dark-muted);
-  margin-bottom: 16px;
+  color: rgba(255,255,255,0.5);
+  margin: 0 0 16px;
 }
 
-.preview-divider {
+.ct-preview-divider {
   height: 1px;
-  background: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.1);
   margin-bottom: 14px;
 }
 
-.preview-info-list {
+.ct-preview-info-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 18px;
+  gap: 9px;
+  margin-bottom: 20px;
 }
 
-.preview-info-row {
+.ct-preview-info-row {
   display: flex;
   justify-content: space-between;
-  gap: 8px;
   align-items: flex-start;
+  gap: 8px;
 }
 
-.preview-info-label {
+.ct-preview-info-label {
   font-size: 11px;
-  color: var(--text-on-dark-muted);
+  color: rgba(255,255,255,0.5);
 }
 
-.preview-info-value {
+.ct-preview-info-value {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--text-on-dark);
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
   text-align: right;
 }
 
-.preview-eligible-num {
-  font-size: 36px;
+/* Eligible students */
+.ct-preview-eligible-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ct-preview-eligible-num {
+  font-size: 42px;
   font-weight: 800;
-  color: var(--text-on-dark);
+  color: #fff;
   line-height: 1;
-  margin-bottom: 2px;
+  letter-spacing: -1px;
 }
 
-.preview-eligible-label {
+.ct-preview-eligible-label {
   font-size: 11.5px;
-  color: var(--text-on-dark-muted);
-  margin-bottom: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
 }
 
-.preview-year-bars {
+/* Year bars grid */
+.ct-preview-bars-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px 16px;
-  margin-bottom: 18px;
+  gap: 10px 16px;
+  margin-bottom: 20px;
 }
 
-.preview-year-row {
+.ct-preview-bar-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
-.preview-year-name {
+.ct-preview-bar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ct-preview-bar-label {
   font-size: 10.5px;
-  color: var(--text-on-dark-muted);
+  color: rgba(255,255,255,0.5);
 }
 
-.preview-year-bar-wrap {
+.ct-preview-bar-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+}
+
+.ct-preview-bar-track {
   height: 5px;
   background: rgba(255,255,255,0.12);
   border-radius: 999px;
   overflow: hidden;
 }
 
-.preview-year-bar-fill {
+.ct-preview-bar-fill {
   height: 100%;
+  background: #7aab5a;
   border-radius: 999px;
+  transition: width 0.4s ease;
 }
 
-.preview-year-count {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-on-dark);
-}
-
-.preview-issue-btn {
+/* Issue button */
+.ct-preview-issue-btn {
   width: 100%;
-  background: rgba(255,255,255,0.13);
-  border: 1.5px solid rgba(255,255,255,0.22);
+  background: rgba(122,171,90,0.3);
+  border: 1.5px solid rgba(122,171,90,0.5);
   border-radius: 10px;
-  color: var(--text-on-dark);
-  padding: 11px;
-  font-size: 12.5px;
+  color: #d4e6b0;
+  padding: 12px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  transition: background 0.15s;
-  margin-bottom: 10px;
+  gap: 8px;
+  transition: background 0.15s, border-color 0.15s;
+  font-family: inherit;
+  margin-bottom: 12px;
+}
+.ct-preview-issue-btn:hover {
+  background: rgba(122,171,90,0.45);
+  border-color: rgba(122,171,90,0.7);
 }
 
-.preview-issue-btn:hover { background: rgba(255,255,255,0.20); }
-
-.preview-note {
+/* Footer note */
+.ct-preview-note {
   font-size: 10px;
-  color: var(--text-on-dark-muted);
-  line-height: 1.55;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.6;
   text-align: center;
+  margin: 0;
 }
