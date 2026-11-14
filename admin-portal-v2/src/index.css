@@ -38,12 +38,16 @@ html, body {
   min-height: 100vh;
   font-size: 14px;
   line-height: 1.5;
+  /* Fixed 1920×1200 reference canvas */
+  min-width: 1280px;
 }
 
 #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  max-width: 1920px;
+  margin: 0 auto;
 }
 
 a {

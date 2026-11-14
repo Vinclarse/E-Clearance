@@ -1,253 +1,274 @@
-/* ── Wrapper ── */
-.navbar-wrapper {
+/* ═══════════════════════════════════════════════════════
+   Navbar  —  4 separate floating elements
+   Brand (white) | Dark pill (nav) | Bell | Profile pill
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Wrapper: horizontal row, all 4 pieces side by side ── */
+.nb-wrapper {
   display: flex;
-  justify-content: center;
-  padding: 16px 32px 8px;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 40px 0;
   position: sticky;
   top: 0;
   z-index: 200;
   background: var(--bg-page);
-}
-
-/* ── Pill ── */
-.navbar {
-  display: flex;
-  align-items: center;
-  background: var(--bg-navbar);
-  border-radius: 999px;
-  padding: 8px 16px;
-  gap: 0;
-  box-shadow: var(--shadow-md);
+  max-width: 1920px;
+  margin: 0 auto;
+  box-sizing: border-box;
   width: 100%;
-  max-width: 1200px;
 }
 
-/* ── Brand ── */
-.navbar-brand {
+/* ══ SECTION 1: Brand — white pill on the far left ══ */
+.nb-brand {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 16px 8px 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.07);
   min-width: 220px;
 }
 
-.navbar-logo {
-  width: 42px;
-  height: 42px;
+.nb-logo {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: #ffffff;
-  border: 2px solid rgba(255,255,255,0.6);
+  background: #fff;
+  border: 2px solid rgba(0,0,0,0.08);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
 
-.navbar-logo-img {
+.nb-logo-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
   display: block;
 }
 
-.navbar-brand-text {
+.nb-brand-text {
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
-.navbar-brand-name {
-  color: var(--text-on-dark);
+.nb-brand-name {
+  color: #1a2810;
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
 }
 
-.navbar-brand-sub {
-  color: var(--text-on-dark-muted);
+.nb-brand-sub {
+  color: #888;
   font-size: 10px;
   font-weight: 400;
 }
 
-/* ── Nav links ── */
-.navbar-nav {
+/* ══ SECTION 2: Dark pill — nav links only ══ */
+.nb-pill {
+  display: flex;
+  align-items: center;
+  background: var(--bg-navbar);       /* #2d3a1e */
+  border-radius: 999px;
+  padding: 6px 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+  flex: 1;                            /* takes remaining center space */
+  justify-content: center;
+}
+
+/* Nav list */
+.nb-nav {
   display: flex;
   align-items: center;
   gap: 2px;
-  flex: 1;
-  justify-content: center;
   list-style: none;
-  padding: 0 12px;
+  padding: 0;
+  margin: 0;
 }
 
-.navbar-nav-link {
+.nb-link {
   display: block;
-  padding: 7px 14px;
+  padding: 8px 16px;
   border-radius: 999px;
-  color: var(--text-on-dark-muted);
-  font-size: 12.5px;
+  color: rgba(255,255,255,0.65);
+  font-size: 13px;
   font-weight: 500;
-  transition: background 0.15s, color 0.15s;
-  white-space: nowrap;
-  cursor: pointer;
   text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+  cursor: pointer;
+  letter-spacing: 0.01em;
 }
 
-.navbar-nav-link:hover {
-  background: rgba(255,255,255,0.08);
-  color: var(--text-on-dark);
+/* Hover effect */
+.nb-link:hover {
+  background: rgba(255,255,255,0.10);
+  color: #fff;
 }
 
-.navbar-nav-link.active {
-  background: var(--bg-navbar-pill);
-  color: var(--text-on-dark);
+/* Active / selected tab */
+.nb-link--active {
+  background: #4a5e30;
+  color: #fff;
   font-weight: 600;
 }
 
-/* ── Right user section ── */
-.navbar-user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  min-width: 220px;
-  justify-content: flex-end;
+.nb-link--active:hover {
+  background: #556b38;
 }
 
-/* Bell */
-.navbar-bell {
-  width: 32px;
-  height: 32px;
+/* ══ SECTION 3: Bell — standalone circle ══ */
+.nb-bell {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.1);
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.09);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-on-dark-muted);
+  color: #444;
   cursor: pointer;
-  transition: background 0.15s;
-  border: none;
+  transition: background 0.15s, box-shadow 0.15s;
   position: relative;
   flex-shrink: 0;
 }
 
-.navbar-bell:hover {
-  background: rgba(255,255,255,0.18);
+.nb-bell:hover {
+  background: #f5f5f5;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.13);
 }
 
-.navbar-bell-badge {
+.nb-bell-badge {
   position: absolute;
   top: -2px;
   right: -2px;
   background: #c43a3a;
   color: #fff;
   font-size: 9px;
-  font-weight: 700;
-  width: 15px;
-  height: 15px;
+  font-weight: 800;
+  min-width: 16px;
+  height: 16px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid var(--bg-navbar);
+  border: 2px solid var(--bg-page);
+  line-height: 1;
+  padding: 0 2px;
 }
 
-/* Profile trigger */
-.navbar-profile-trigger {
+/* ══ SECTION 4: Profile pill — far right ══ */
+.nb-profile {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 6px;
+  gap: 9px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.09);
   border-radius: 999px;
-  transition: background 0.15s;
+  padding: 5px 12px 5px 5px;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
-.navbar-profile-trigger:hover {
-  background: rgba(255,255,255,0.1);
+.nb-profile:hover,
+.nb-profile--open {
+  background: #f5f5f5;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.13);
 }
 
-.navbar-avatar {
-  width: 32px;
-  height: 32px;
+/* Avatar circle */
+.nb-avatar {
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: var(--accent-olive);
+  background: var(--bg-navbar);
+  overflow: hidden;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-on-dark);
-  font-size: 11px;
-  font-weight: 700;
-  flex-shrink: 0;
-  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.08);
 }
 
-.navbar-avatar img {
+.nb-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+  display: block;
 }
 
-.navbar-user-info {
+/* Name + role */
+.nb-user-text {
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
+  line-height: 1.25;
   text-align: left;
 }
 
-.navbar-user-name {
-  color: var(--text-on-dark);
+.nb-user-name {
+  color: #1a2810;
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
 }
 
-.navbar-user-role {
-  color: var(--text-on-dark-muted);
-  font-size: 9.5px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+.nb-user-role {
+  color: #888;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-.navbar-chevron {
-  color: var(--text-on-dark-muted);
+/* Triangle caret ▾ */
+.nb-caret {
+  color: #666;
+  font-size: 16px;
+  line-height: 1;
   transition: transform 0.2s ease;
   flex-shrink: 0;
+  margin-left: 2px;
 }
 
-.navbar-chevron.open {
+.nb-caret--up {
   transform: rotate(180deg);
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════════
    DROPDOWN  — fixed position, escapes pill
-══════════════════════════════════════════ */
-.navbar-dropdown {
-  position: fixed;          /* ← key: escapes all parent stacking contexts */
-  min-width: 252px;
-  background: #ffffff;
+══════════════════════════════════════════════ */
+.nb-dropdown {
+  position: fixed;
+  min-width: 260px;
+  background: #fff;
   border-radius: 14px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08);
   border: 1px solid var(--border-color);
   z-index: 9999;
   overflow: hidden;
-  animation: dropdownFade 0.15s ease;
+  animation: nbDropFade 0.15s ease;
 }
 
-@keyframes dropdownFade {
+@keyframes nbDropFade {
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Header card inside dropdown */
-.navbar-dropdown-header {
+/* Dropdown header */
+.nb-dd-header {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -256,70 +277,64 @@
   border-bottom: 1px solid var(--border-color);
 }
 
-.navbar-dropdown-avatar-lg {
+.nb-dd-avatar-lg {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--bg-sidebar);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
+  background: var(--bg-navbar);
+  overflow: hidden;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  overflow: hidden;
 }
 
-.navbar-dropdown-avatar-lg img {
+.nb-dd-avatar-lg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+  display: block;
 }
 
-.navbar-dropdown-header-info {
+.nb-dd-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
 }
 
-.navbar-dropdown-name {
+.nb-dd-name {
   font-size: 13px;
   font-weight: 700;
   color: var(--text-primary);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.navbar-dropdown-email {
+.nb-dd-email {
   font-size: 11px;
   color: var(--text-secondary);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.navbar-dropdown-role-badge {
+.nb-dd-role-badge {
   display: inline-block;
   background: rgba(45,58,30,0.1);
   color: var(--bg-navbar);
   border-radius: 999px;
-  padding: 2px 8px;
+  padding: 2px 9px;
   font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 0.03em;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
-.navbar-dropdown-divider {
+.nb-dd-divider {
   height: 1px;
   background: var(--border-color);
 }
 
-.navbar-dropdown-item {
+/* Dropdown items */
+.nb-dd-item {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -337,22 +352,19 @@
   font-family: inherit;
 }
 
-.navbar-dropdown-item:hover {
+.nb-dd-item:hover {
   background: #f5f4ef;
   color: var(--bg-navbar);
 }
 
-.navbar-dropdown-item.active {
+.nb-dd-item.active {
   background: #f5f4ef;
   color: var(--bg-navbar);
   font-weight: 600;
 }
 
-.navbar-dropdown-item.danger {
-  color: #c43a3a;
-}
-
-.navbar-dropdown-item.danger:hover {
+.nb-dd-item--danger { color: #c43a3a; }
+.nb-dd-item--danger:hover {
   background: #fff5f5;
   color: #a02a2a;
 }

@@ -1,32 +1,29 @@
 import { useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Bell, ChevronDown, User, Settings, LogOut } from "lucide-react";
+import { Bell, User, Settings, LogOut } from "lucide-react";
 import "./Navbar.css";
 
 const navLinks = [
-  { to: "/", label: "Executive Dashboard" },
-  { to: "/clearance-templates", label: "Clearance Templates" },
-  { to: "/student-directory", label: "Student Directory" },
-  { to: "/signatory-roles", label: "Signatory Roles" },
-  { to: "/audit-logs", label: "Audit Logs" },
+  { to: "/",                    label: "Executive Dashboard"   },
+  { to: "/clearance-templates", label: "Clearance Templates"   },
+  { to: "/student-directory",   label: "Student Directory"     },
+  { to: "/signatory-roles",     label: "Signatory Roles"       },
+  { to: "/audit-logs",          label: "Audit Logs"            },
 ];
 
 export default function Navbar() {
-  const [showMenu, setShowMenu]   = useState(false);
-  const [menuPos,  setMenuPos]    = useState({ top: 0, right: 0 });
-  const [notifCount]              = useState(3);
-  const triggerRef                = useRef(null);
-  const dropdownRef               = useRef(null);
-  const navigate                  = useNavigate();
+  const [showMenu,   setShowMenu]   = useState(false);
+  const [menuPos,    setMenuPos]    = useState({ top: 0, right: 0 });
+  const [notifCount]                = useState(3);
+  const triggerRef                  = useRef(null);
+  const dropdownRef                 = useRef(null);
+  const navigate                    = useNavigate();
 
   /* ── Open / close ── */
   function handleTrigger() {
     if (!showMenu && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
-      setMenuPos({
-        top:   rect.bottom + 8,
-        right: window.innerWidth - rect.right,
-      });
+      setMenuPos({ top: rect.bottom + 8, right: window.innerWidth - rect.right });
     }
     setShowMenu((v) => !v);
   }
@@ -37,15 +34,13 @@ export default function Navbar() {
       if (
         dropdownRef.current && !dropdownRef.current.contains(e.target) &&
         triggerRef.current  && !triggerRef.current.contains(e.target)
-      ) {
-        setShowMenu(false);
-      }
+      ) setShowMenu(false);
     }
     if (showMenu) document.addEventListener("mousedown", onOutside);
     return () => document.removeEventListener("mousedown", onOutside);
   }, [showMenu]);
 
-  /* ── Reposition on scroll / resize ── */
+  /* ── Reposition on resize / scroll ── */
   useEffect(() => {
     function reposition() {
       if (showMenu && triggerRef.current) {
@@ -69,105 +64,94 @@ export default function Navbar() {
   }
 
   return (
-    <div className="navbar-wrapper">
-      <nav className="navbar">
+    <div className="nb-wrapper">
 
-        {/* Left: Brand */}
-        <div className="navbar-brand">
-          <div className="navbar-logo">
-            <img src="/dnsc-logo.jpg" alt="DNSC Logo" className="navbar-logo-img" />
-          </div>
-          <div className="navbar-brand-text">
-            <span className="navbar-brand-name">Davao del Norte State College</span>
-            <span className="navbar-brand-sub">Administration - All Institutes</span>
-          </div>
+      {/* ── SECTION 1: Brand (white card — far left, OUTSIDE dark pill) ── */}
+      <div className="nb-brand">
+        <div className="nb-logo">
+          <img src="/dnsc-logo.jpg" alt="DNSC Logo" className="nb-logo-img" />
         </div>
+        <div className="nb-brand-text">
+          <span className="nb-brand-name">Davao del Norte State College</span>
+          <span className="nb-brand-sub">Administration · All Institutes</span>
+        </div>
+      </div>
 
-        {/* Center: Nav Links */}
-        <ul className="navbar-nav">
+      {/* ── SECTION 2: Dark pill — nav links only ── */}
+      <nav className="nb-pill">
+        <ul className="nb-nav">
           {navLinks.map((link) => (
             <li key={link.to}>
               <NavLink
                 to={link.to}
                 end={link.to === "/"}
-                className={({ isActive }) =>
-                  "navbar-nav-link" + (isActive ? " active" : "")
-                }
+                className={({ isActive }) => "nb-link" + (isActive ? " nb-link--active" : "")}
               >
                 {link.label}
               </NavLink>
             </li>
           ))}
         </ul>
-
-        {/* Right: Bell + User */}
-        <div className="navbar-user">
-          <button className="navbar-bell" aria-label="Notifications">
-            <Bell size={15} />
-            {notifCount > 0 && (
-              <span className="navbar-bell-badge">{notifCount}</span>
-            )}
-          </button>
-
-          <button
-            ref={triggerRef}
-            className="navbar-profile-trigger"
-            onClick={handleTrigger}
-            aria-expanded={showMenu}
-          >
-            <div className="navbar-avatar">JKF</div>
-            <div className="navbar-user-info">
-              <span className="navbar-user-name">Jandy Kyle Fuerza</span>
-              <span className="navbar-user-role">System Administrator</span>
-            </div>
-            <ChevronDown
-              size={14}
-              className={"navbar-chevron" + (showMenu ? " open" : "")}
-            />
-          </button>
-        </div>
       </nav>
 
-      {/* ── Dropdown — fixed position, escapes all parent stacking ── */}
+      {/* ── SECTION 3: Bell — standalone circle ── */}
+      <button className="nb-bell" aria-label="Notifications">
+        <Bell size={16} strokeWidth={1.8} />
+        {notifCount > 0 && (
+          <span className="nb-bell-badge">{notifCount}</span>
+        )}
+      </button>
+
+      {/* ── SECTION 4: Profile pill — far right ── */}
+      <button
+        ref={triggerRef}
+        className={"nb-profile" + (showMenu ? " nb-profile--open" : "")}
+        onClick={handleTrigger}
+        aria-expanded={showMenu}
+      >
+        {/* Avatar circle */}
+        <div className="nb-avatar">
+          <img src="/dnsc-logo.jpg" alt="avatar" />
+        </div>
+        {/* Name + role */}
+        <div className="nb-user-text">
+          <span className="nb-user-name">Jandy Kyle Fuerzas</span>
+          <span className="nb-user-role">SYSTEM ADMINISTRATOR</span>
+        </div>
+        {/* Triangle caret ▼ */}
+        <span className={"nb-caret" + (showMenu ? " nb-caret--up" : "")}>▾</span>
+      </button>
+
+      {/* ── Dropdown (fixed, escapes stacking context) ── */}
       {showMenu && (
         <div
           ref={dropdownRef}
-          className="navbar-dropdown"
+          className="nb-dropdown"
           style={{ top: menuPos.top, right: menuPos.right }}
         >
-          {/* Header */}
-          <div className="navbar-dropdown-header">
-            <div className="navbar-dropdown-avatar-lg">
-                <img src="/dnsc-logo.jpg" alt="DNSC" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
-              </div>
-            <div className="navbar-dropdown-header-info">
-              <p className="navbar-dropdown-name">Jandy Kyle Fuerza</p>
-              <p className="navbar-dropdown-email">admin@dnsc.edu.ph</p>
-              <span className="navbar-dropdown-role-badge">System Administrator</span>
+          <div className="nb-dd-header">
+            <div className="nb-dd-avatar-lg">
+              <img src="/dnsc-logo.jpg" alt="DNSC" />
+            </div>
+            <div className="nb-dd-info">
+              <p className="nb-dd-name">Jandy Kyle Fuerzas</p>
+              <p className="nb-dd-email">admin@dnsc.edu.ph</p>
+              <span className="nb-dd-role-badge">System Administrator</span>
             </div>
           </div>
 
-          <div className="navbar-dropdown-divider" />
+          <div className="nb-dd-divider" />
 
-          <NavLink
-            to="/profile"
-            className="navbar-dropdown-item"
-            onClick={() => setShowMenu(false)}
-          >
+          <NavLink to="/profile" className="nb-dd-item" onClick={() => setShowMenu(false)}>
             <User size={14} /> My Profile
           </NavLink>
-
-          <NavLink
-            to="/settings"
-            className="navbar-dropdown-item"
-            onClick={() => setShowMenu(false)}
-          >
+          <NavLink to="/settings" className="nb-dd-item" onClick={() => setShowMenu(false)}>
             <Settings size={14} /> Settings
           </NavLink>
 
-          <div className="navbar-dropdown-divider" />
+          <div className="nb-dd-divider" />
 
-          <button className="navbar-dropdown-item danger" onClick={handleLogout}>
+          <button className="nb-dd-item nb-dd-item--danger" onClick={handleLogout}>
             <LogOut size={14} /> Logout
           </button>
         </div>

@@ -109,7 +109,13 @@ export default function ExecutiveDashboard() {
             {statCards.map((c) => (
               <div
                 key={c.id}
-                className={"stat-card" + (c.border === "blue" ? " has-blue-border" : "")}
+                className={
+                  "stat-card" +
+                  (c.border === "dark-green"  ? " border-top-dark-green"  : "") +
+                  (c.border === "light-green" ? " border-top-light-green" : "") +
+                  (c.border === "red"         ? " border-top-red"         : "") +
+                  (c.border === "blue"        ? " border-top-blue"        : "")
+                }
               >
                 <span className="stat-card-label">{c.label}</span>
                 <span className="stat-card-value">{c.value}</span>

@@ -194,16 +194,16 @@
 
 .sidebar-date-row {
   display: flex;
+  flex-direction: column;
   gap: 8px;
   margin-bottom: 10px;
-  align-items: center;
 }
 
 .sidebar-date-field {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 3px;
+  width: 100%;
 }
 
 .sidebar-date-label {
@@ -218,15 +218,18 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .sidebar-date-input {
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 8px;
   color: var(--text-on-dark);
-  padding: 6px 28px 6px 8px;
+  padding: 6px 32px 6px 8px;
   font-size: 11px;
   appearance: none;
 }
@@ -240,6 +243,7 @@
   right: 7px;
   color: var(--text-on-dark-muted);
   pointer-events: none;
+  flex-shrink: 0;
 }
 
 .sidebar-apply-btn {
